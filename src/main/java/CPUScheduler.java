@@ -2,20 +2,42 @@
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
+   public class CPUScheduler implements Runnable {
 
-public class CPUScheduler extends Thread {
+    private Thread t;
+
     Job[] jobBatch;
     Scheduler policy;
     JTextArea textArea;
     JTextField textField;
     JProgressBar[] pbars;
     JLabel[] burstTimes;
-    ComputationThread[] myThreads = new ComputationThread[SchedulingGUI.NUM_OF_PROCESSES];
+    ComputationThread[] myThreads =
+            new ComputationThread[SchedulingGUI.NUM_OF_PROCESSES];
     JLabel[] waitingTimes, priorities;
     static int statusSum = 0;
-    
-    public CPUScheduler(Job[] jobBatch, Scheduler policy, JTextArea textArea, JTextField textField, JProgressBar[] pbars,
-            JLabel[] burstTimes, JLabel[] waitingTimes, JLabel[] priorities) {
+
+    public void start() {
+        if (t == null) {
+            t = new Thread(this);
+            t.start();
+        }
+    }
+
+    public void join() throws InterruptedException {
+        if (t != null)
+            t.join();
+    }
+
+    public CPUScheduler(Job[] jobBatch,
+                        Scheduler policy,
+                        JTextArea textArea,
+                        JTextField textField,
+                        JProgressBar[] pbars,
+                        JLabel[] burstTimes,
+                        JLabel[] waitingTimes,
+                        JLabel[] priorities) {
+
         this.jobBatch = jobBatch;
         this.policy = policy;
         this.textArea = textArea;
@@ -25,7 +47,7 @@ public class CPUScheduler extends Thread {
         this.waitingTimes = waitingTimes;
         this.priorities = priorities;
     }
-    
+    @Override
     public void run() {    
         if(CalcSimulation.algo.equals("FCFS")) {
             Job arrivedJob;
