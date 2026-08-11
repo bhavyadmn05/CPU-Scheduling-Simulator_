@@ -341,7 +341,7 @@ mvn clean install
 mvn exec:java
 ```
 
-or open the project in **NetBeans** or **IntelliJ IDEA** and run `SchedulingGUI.java`.
+or open the project in **NetBeans** or any java IDE and run `SchedulingGUI.java`.
 
 ---
 
